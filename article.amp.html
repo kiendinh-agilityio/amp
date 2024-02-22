@@ -7,7 +7,7 @@
     <link rel="canonical" href="./article.html" />
     <link rel="shortcut icon" href="amp_favicon.png" />
 
-    <title>News Pages AMP</title>
+    <title>Example News Pages AMP</title>
 
     <style amp-boilerplate>
       body {
@@ -163,20 +163,49 @@
         width: 100%;
         padding-top: 10px;
         padding-bottom: 10px;
+        border-radius: 8px;
       }
 
       .input::placeholder {
         padding-left: 5px;
       }
 
-      .btn-subscribe {
+      .btn-subscribe,
+      .btn-submit {
         background-color: rgb(65, 29, 243);
         color: #fff;
         border-radius: 8px;
         border: 1px solid rgb(65, 29, 243);
         padding: 12px 24px;
       }
+
+      .flag {
+        min-height: 16px;
+        background: url('/static/samples/img/unknown-flag.png') no-repeat;
+      }
+      body.amp-iso-country-ca .flag {
+        background: url('/static/samples/img/canadian-flag.png') no-repeat;
+      }
+      body.amp-iso-country-us .flag {
+        background: url('/static/samples/img/american-flag.png') no-repeat;
+      }
+      .football:after {
+        content: 'football';
+      }
+      body.amp-geo-group-soccer .football:after {
+        content: 'soccer';
+      }
+      body.amp-geo-group-eea .message-non-eea,
+      body:not(.amp-geo-group-eea) .message-eea {
+        display: none;
+      }
+
+      .btn-submit {
+        margin-left: 20px;
+      }
     </style>
+
+    <!-- Import the amp component. -->
     <script async src="https://cdn.ampproject.org/v0.js"></script>
     <script
       async
@@ -237,7 +266,24 @@
       custom-element="amp-audio"
       src="https://cdn.ampproject.org/v0/amp-audio-0.1.js"
     ></script>
-    <script async custom-element="amp-form" src="https://cdn.ampproject.org/v0/amp-form-0.1.js"></script>
+    <script
+      async
+      custom-element="amp-form"
+      src="https://cdn.ampproject.org/v0/amp-form-0.1.js"
+    ></script>
+    <script
+      async
+      custom-element="amp-geo"
+      src="https://cdn.ampproject.org/v0/amp-geo-0.1.js"
+    ></script>
+    <script
+      async
+      custom-element="amp-bind"
+      src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"
+    ></script>
+
+    <!-- Import the `amp-reddit` component -->
+    <script async custom-element="amp-reddit" src="https://cdn.ampproject.org/v0/amp-reddit-0.1.js"></script>
   </head>
   <body>
     <header class="headerbar">
@@ -249,7 +295,9 @@
       >
         ☰
       </div>
-      <div class="site-name">Testing AMP</div>
+      <div class="site-name">Example About AMP</div>
+
+      <!-- Example about amp sidebar -->
       <amp-sidebar
         id="sidebar1"
         layout="nodisplay"
@@ -280,7 +328,16 @@
         tortor sapien, non tristique ligula accumsan eu.
       </p>
 
-      <amp-carousel layout="responsive" width="300" height="168" type="slides">
+      <!-- Example about amp carousel -->
+      <amp-carousel
+        width="450"
+        height="300"
+        layout="responsive"
+        type="slides"
+        role="region"
+        aria-label="Basic carousel"
+      >
+        <!-- Example about amp img -->
         <amp-img
           src="mountains.jpg"
           width="300"
@@ -302,6 +359,8 @@
       </amp-carousel>
 
       <p>Embed a YouTube video</p>
+
+      <!-- Example about amp youtube -->
       <amp-youtube
         data-videoid="npum8JsITQE"
         layout="responsive"
@@ -313,6 +372,7 @@
         </div>
       </amp-youtube>
 
+      <!-- Example about amp audio -->
       <amp-audio
         width="400"
         height="300"
@@ -326,31 +386,61 @@
       </amp-audio>
     </article>
 
+    <!-- Example about amp form -->
     <!-- ## Form custom -->
     <h2 class="sample-heading">Form Custom:</h2>
 
-    <form class="sample-form" method="post" action-xhr="/documentation/examples/api/submit-form-input-text-xhr" target="_top" custom-validation-reporting="show-all-on-submit">
-      <input class="input" type="text" id="show-all-on-submit-name" name="name" placeholder="Name..." required pattern="\p{L}+\s\p{L}+">
-      <span visible-when-invalid="valueMissing" validation-for="show-all-on-submit-name"></span>
-      <span visible-when-invalid="patternMismatch" validation-for="show-all-on-submit-name">
-        Please enter your first and last name separated by a space (e.g. Jane Miller)
+    <form
+      class="sample-form"
+      method="post"
+      action-xhr="/documentation/examples/api/submit-form-input-text-xhr"
+      target="_top"
+      custom-validation-reporting="show-all-on-submit"
+    >
+      <input
+        class="input"
+        type="text"
+        id="show-all-on-submit-name"
+        name="name"
+        placeholder="Name..."
+        required
+        pattern="\p{L}+\s\p{L}+"
+      />
+      <span
+        visible-when-invalid="valueMissing"
+        validation-for="show-all-on-submit-name"
+      ></span>
+      <span
+        visible-when-invalid="patternMismatch"
+        validation-for="show-all-on-submit-name"
+      >
+        Please enter your first and last name separated by a space (e.g. Jane
+        Miller)
       </span>
-      <input class="input" type="email" id="show-all-on-submit-email" name="email" placeholder="Email..." required>
-      <span visible-when-invalid="valueMissing" validation-for="show-all-on-submit-email"></span>
-      <span visible-when-invalid="typeMismatch" validation-for="show-all-on-submit-email"></span>
-      <button class="btn-subscribe" type="submit" value="Subscribe">Subscribe</button>
-      <div submit-success>
-        <template type="amp-mustache">
-          Success! Thanks {{name}} for trying the <code>amp-form</code> demo! Try to insert the word "error" as a name input in the form to see how <code>amp-form</code> handles errors.
-        </template>
-      </div>
-      <div submit-error>
-        <template type="amp-mustache">
-          Error! Thanks {{name}} for trying the <code>amp-form</code> demo.
-        </template>
-      </div>
+      <input
+        class="input"
+        type="email"
+        id="show-all-on-submit-email"
+        name="email"
+        placeholder="Email..."
+        required
+      />
+      <span
+        visible-when-invalid="valueMissing"
+        validation-for="show-all-on-submit-email"
+      ></span>
+      <span
+        visible-when-invalid="typeMismatch"
+        validation-for="show-all-on-submit-email"
+      ></span>
+      <button class="btn-subscribe" type="submit" value="Subscribe">
+        Subscribe
+      </button>
     </form>
 
+
+
+    <!-- Example about amp ad -->
     <amp-ad
       type="a9"
       data-amzn_assoc_ad_mode="auto"
@@ -374,6 +464,119 @@
       data-cid="19626-3798936394"
     >
     </amp-ad>
+
+    <!--
+      `amp-geo` components is configured via json and every page can only contain one `amp-geo` tag. We are showing different samples of `amp-geo` on this page and we will explain the json configuration for each sample.
+    -->
+    <amp-geo layout="nodisplay">
+      <script type="application/json">
+        {
+          "AmpBind": true,
+          "ISOCountryGroups": {
+            "soccer": ["au", "ca", "ie", "nz", "us", "za"],
+            "football": ["unknown"],
+            "eea": ["preset-eea"]
+          }
+        }
+      </script>
+    </amp-geo>
+    <!--
+      `amp-geo` makes available a class `amp-iso-country-XX` where XX is an ISO Country Code.
+      In the following example, the component determines the ISO Country Code corresponding to the user's approximate location. If this is "ca" (Canada), the page displays a maple leaf flag, otherwise the American flag.
+      For testing, if you want to force the country to be Canada, you can append `#amp-geo=ca` to the URL like [https://amp.dev/documentation/examples/components/amp-geo#amp-geo=ca](https://amp.dev/documentation/examples/components/amp-geo#amp-geo=ca) and enable the `beta-channel` [here](https://cdn.ampproject.org/experiments.html).
+      Read more about debugging amp-geo on the official [doc](/content/amp-dev/documentation/components/reference/amp-geo-v0.1.md) -->
+    <div class="flag"></div>
+
+    <!--
+      ## Country grouping
+
+      Here we are using the `amp-geo` grouping feature to define two different groups of ISO country codes: one for those who play soccer and one for those who play football.
+      Notice how we have a group containing 'unknown' in the `amp-geo` tag: if the country cannot be determined, the value is set to 'unknown'.
+      When using the grouping feature with `amp-geo` at least one group must contain 'unknown'. When using grouping, `amp-geo` makes available
+      a class `amp-geo-group-XX` where XX is the name of the group determined by `amp-geo`.
+    -->
+    <p>The game is called <span class="football"></span></p>
+
+    <!--
+  ## Integration with amp-bind
+
+  If the `AMPBind` key is present in the `amp-geo` json configuration, `amp-geo` inserts an `amp-state` tag containing the current ISOCountry and group information.  -->
+    <div>
+      <button class="btn-submit" on="tap:AMP.setState({ showLocation: true })">
+        Where am I?
+      </button>
+      <p hidden [hidden]="!showLocation">
+        ISOCountry Code: <span [text]="ampGeo.ISOCountry"></span>
+      </p>
+      <p hidden [hidden]="!showLocation">
+        Matched Country Groups:
+        <span [text]="ampGeo.ISOCountryGroups.join(', ')"></span>
+      </p>
+    </div>
+
+    <!--
+      ## Preset country groups
+
+      Important: GOOGLE AND THE AMP PROJECT ARE PROVIDING THIS INFORMATION AS A COURTESY BUT DO NOT GUARANTEE THE ACCURACY OR COMPLETENESS OF ANY INFORMATION CONTAINED HEREIN. THIS INFORMATION IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+      `amp-geo` supports preset country lists for specific regions. For example, there is a preset for the European Economic Area (EEA) `preset-eea` which we assign to an `ISOCountryGroup` named `eea`:
+
+      ```json
+      "ISOCountryGroups": {
+          "eea": [ "preset-eea" ],
+          ...
+      }
+      ```
+
+      In this sample, we show a different message to users inside and outside the EEA based on the presence of the `amp-geo-group-eea` class in the body tag using the following css rule:
+
+      ```css
+      body.amp-geo-group-eea .message-non-eea,
+      body:not(.amp-geo-group-eea) .message-eea {
+        display: none;
+      }
+      ```
+
+      Which we then can use to show different messages to users in and outside the EEA:
+    -->
+    <div>
+      <p class="message-eea">You're in the EU.</p>
+      <p class="message-non-eea">You're outside the EU.</p>
+    </div>
+
+    <!--
+      ## Post embed
+
+      Embeds a singe post.
+    -->
+    <amp-reddit layout="responsive" width="300" height="400" data-embedtype="post" data-src="https://www.reddit.com/r/me_irl/comments/52rmir/me_irl/?ref=share&ref_source=embed">
+    </amp-reddit>
+
+    <!--
+      ## Comment embed
+
+      Embeds a single comment.
+    -->
+    <amp-reddit layout="responsive" width="400" height="400" data-embedtype="comment" data-src="https://www.reddit.com/r/me_irl/comments/52rmir/me_irl/d7n3soo/">
+    </amp-reddit>
+
+  <!--
+    ## Parent comment
+
+    Embeds the parent comment by specifying `data-embedparent="true"`.
+  -->
+    <amp-reddit layout="responsive" width="400" height="400" data-embedtype="comment" data-src="https://www.reddit.com/r/me_irl/comments/52rmir/me_irl/d7n3soo/" data-embedparent="true">
+    </amp-reddit>
+
+  <!--
+    ## Auto update comments
+
+    Updates comments when the original comment is updated by specifying `data-embedlive="true"`
+  -->
+  <amp-reddit layout="responsive" width="400" height="400" data-embedtype="comment" data-src="https://www.reddit.com/r/sports/comments/54loj1/50_cents_awful_1st_pitch_given_a_historical/d8306kw" data-embedlive="true">
+  </amp-reddit>
+
+    <!-- Example about amp embed -->
     <amp-embed
       type="taboola"
       width="400"
